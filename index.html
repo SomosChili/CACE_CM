@@ -613,7 +613,7 @@ function gSeg(end){
     const dt = Math.min(0.05, (t - last)/1000); last = t; W = sc.clientWidth; H = sc.clientHeight;
     if (running){
       const prev = cam;
-      if (jt > 0) cam += 0.5*dt; else if (holding) cam += 0.36*dt;
+      if (jt > 0) cam = Math.min(cam + 0.5*dt, sus - 0.16); else if (holding) cam += 0.36*dt;   /* el salto nunca te deja encima de la zapatilla */
       if (jt > 0) jt = Math.max(0, jt - dt);
       inv -= dt; pt -= dt;
       /* zona del obstáculo: si estás en el aire en algún momento dentro de ella, lo pasaste (aunque caigas encima) */
