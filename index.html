@@ -547,13 +547,30 @@ function openBrief(id){
   show('brief');
 }
 $('#bBack').onclick = openArchivo;
-$('#bGo').onclick = () => startGame();
+$('#bGo').onclick = () => {
+  gtag('event', 'game_start', {
+    game_id: cur.id,
+    game_name: cur.title
+  });
+  startGame();
+};
 document.querySelectorAll('[data-quit]').forEach(b => b.onclick = () => { if (stop) stop(); stop = null; openArchivo(); });
 
 function startGame(){
   if (stop) stop();
-  const end = (ok, msg) => { if (stop) stop(); stop = null; result(ok, msg); };
-  stop = ({ seg:gSeg, rc:gRc, cz:gCz, cam:gCam })[cur.id](end);
+const end = (ok, msg) => {
+  if (stop) stop();
+  stop = null;
+
+  if (ok) {
+    gtag('event', 'game_complete', {
+      game_id: cur.id,
+      game_name: cur.title
+    });
+  }
+
+  result(ok, msg);
+};  stop = ({ seg:gSeg, rc:gRc, cz:gCz, cam:gCam })[cur.id](end);
 }
 
 /* utilidades de juego */
